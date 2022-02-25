@@ -98,6 +98,12 @@ class navigationDrawerAdmin extends StatelessWidget {
             onTap: () =>
                 Navigator.pushReplacementNamed(context, MyRoutes.TripsOnTheWay),
           ),
+          createDrawerBodyItem(
+            icon: Icons.car_rental_sharp,
+            text: 'Completed Trips',
+            onTap: () =>
+                Navigator.pushReplacementNamed(context, MyRoutes.TripsOnTheWay),
+          ),
           Divider(),
           createDrawerBodyItem(
             icon: Icons.star,

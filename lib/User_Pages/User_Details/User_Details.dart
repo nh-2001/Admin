@@ -11,6 +11,7 @@ import 'package:myproject/User_Pages/User_Details/BusinessUser/BusinessUserDocLi
 import 'package:myproject/User_Pages/User_Details/NonBusinessUser/NonBusinessUserDocList.dart';
 import 'package:path/path.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class User_Details extends StatefulWidget {
@@ -205,16 +206,12 @@ class _User_DetailsState extends State<User_Details> {
 
   // }
   String? MyUserID;
-  void getUserCredentials() async {
-    final prefs = await SharedPreferences.getInstance();
-    MyUserID = prefs.getString("UserAuthID");
-  }
-
   String? FN;
   String? LN;
-  void getFirstAndLastName() async {
+  void getUserCredentials() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
+      MyUserID = prefs.getString("UserAuthID");
       FN = prefs.getString("Firstname");
       LN = prefs.getString("Lastname");
     });
@@ -225,7 +222,6 @@ class _User_DetailsState extends State<User_Details> {
     // TODO: implement initState
     super.initState();
     getUserCredentials();
-    getFirstAndLastName();
   }
 
   @override
@@ -329,7 +325,7 @@ class _User_DetailsState extends State<User_Details> {
                 onChanged: (value) {
                   t = value;
                 },
-                //readOnly: true,
+                readOnly: true,
                 controller: _FirstNamecontroller,
                 decoration: InputDecoration(
                   labelText: "First Name",
@@ -350,7 +346,7 @@ class _User_DetailsState extends State<User_Details> {
                 onChanged: (value) {
                   r = value;
                 },
-                //readOnly: true,
+                readOnly: true,
                 controller: _LastNamecontroller,
                 decoration: InputDecoration(
                   labelText: "Last Name ",
@@ -392,18 +388,19 @@ class _User_DetailsState extends State<User_Details> {
             ),
             InkWell(
               onTap: () async {
+                ProgressDialog pr = ProgressDialog(context);
                 print(MyUserID);
                 if (_value == 1) {
                   if (image_pick) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text("Please upload profile pic."),
-                        backgroundColor: Colors.red,
+                        content: Text("Please upload the profile pic."),
+                        backgroundColor: Colors.black,
                       ),
                     );
                   } else {
                     if (_formKey.currentState!.validate()) {
-                      EasyLoading.show(status: 'loading...');
+                      pr.show();
                       if (imageFile == null) return;
                       String fileName = basename(imageFile!.path);
                       Reference storage = FirebaseStorage.instance
@@ -423,13 +420,14 @@ class _User_DetailsState extends State<User_Details> {
                         'DOB': u,
                         'url': url,
                       });
-                      EasyLoading.dismiss();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BusinessUserDocList(),
-                        ),
-                      );
+                      pr.hide().whenComplete(() {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BusinessUserDocList(),
+                          ),
+                        );
+                      });
                     }
                   }
                 } else if (_value == 2) {
@@ -437,13 +435,13 @@ class _User_DetailsState extends State<User_Details> {
                   if (image_pick) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text("Please upload profile pic."),
-                        backgroundColor: Colors.red,
+                        content: Text("Please upload the profile pic."),
+                        backgroundColor: Colors.black,
                       ),
                     );
                   } else {
                     if (_formKey.currentState!.validate()) {
-                      EasyLoading.show(status: 'loading...');
+                      pr.show();
                       if (imageFile == null) return;
                       String fileName = basename(imageFile!.path);
                       Reference storage = FirebaseStorage.instance
@@ -463,17 +461,17 @@ class _User_DetailsState extends State<User_Details> {
                         'DOB': u,
                         'url': url,
                       });
-                      EasyLoading.dismiss();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => NonBusinessUserDocList(),
-                        ),
-                      );
+                      pr.hide().whenComplete(() {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NonBusinessUserDocList(),
+                          ),
+                        );
+                      });
                     }
                   }
                 }
-                // EasyLoading.show(status: 'done');
               },
               child: AnimatedContainer(
                 duration: Duration(seconds: 2),
@@ -489,8 +487,16 @@ class _User_DetailsState extends State<User_Details> {
                   ),
                 ),
                 decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.8),
+                        spreadRadius: 2,
+                        blurRadius: 6,
+                        offset: Offset(0, 2), // changes position of shadow
+                      ),
+                    ],
                     color: Colors.deepPurple,
-                    borderRadius: BorderRadius.circular(25)),
+                    borderRadius: BorderRadius.circular(15)),
               ),
             ),
           ]),

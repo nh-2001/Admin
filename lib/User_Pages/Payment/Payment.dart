@@ -1,13 +1,16 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:myproject/All_User_Pages/SignUp/SignUp.dart';
 import 'package:myproject/User_Pages/Invoice/InvoiceScreen.dart';
 import 'package:myproject/User_Pages/Map/Map_Screen.dart';
 import 'package:myproject/User_Pages/SelectVehicle/VehicleDetails.dart';
 import 'package:myproject/User_Pages/TripDetails/tripDetails.dart';
+import 'package:myproject/User_Pages/User_Details/User_Details.dart';
 import 'package:myproject/Utils/routes.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
 class Payment extends StatefulWidget {
@@ -21,12 +24,19 @@ class Payment extends StatefulWidget {
 class _PaymentState extends State<Payment> {
   late Razorpay razorpay;
 
-  var TotalPrice = 100;
-  //double.parse(Distance) * double.parse(PricePerKM!);
+  var TotalPrice = double.parse(Distance) * double.parse(PricePerKM!);
+  String? MyUserID;
+  void getUserCredentials() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      MyUserID = prefs.getString("UserAuthID");
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    getUserCredentials();
     razorpay = new Razorpay();
     razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlePaymentSuccess);
     razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlePaymentError);
@@ -61,13 +71,19 @@ class _PaymentState extends State<Payment> {
     }
   }
 
-  void handlePaymentSuccess(PaymentSuccessResponse response) {
+  void handlePaymentSuccess(PaymentSuccessResponse response) async {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text("Payment Successful."),
         backgroundColor: Colors.green,
       ),
     );
+    // await FirebaseFirestore.instance.collection("Payment").add({
+    //   "UserID": MyUserID,
+    //   "DriverID": Driverid,
+    //   "UserName": Firstname,
+    //   "DriverName": DriverName,
+    // });
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -85,14 +101,14 @@ class _PaymentState extends State<Payment> {
 
   @override
   Widget build(BuildContext context) {
-    // FirebaseFirestore.instance
-    //     .collection('Driver')
-    //     .doc(Driverid)
-    //     .collection("Request")
-    //     .doc(widget.rid)
-    //     .update({
-    //   'Status': '0',
-    // });
+    FirebaseFirestore.instance
+        .collection('Driver')
+        .doc(Driverid)
+        .collection("Request")
+        .doc(widget.rid)
+        .update({
+      'Status': '0',
+    });
 
     return Scaffold(
       body: SingleChildScrollView(

@@ -20,6 +20,7 @@ class ReceiverInfo extends StatefulWidget {
 }
 
 String? Receiver_Mobile_No;
+String? Receiver_Dial_code;
 String? Receiver_firstname;
 String? Receiver_lastname;
 
@@ -136,7 +137,8 @@ class _ReceiverInfoState extends State<ReceiverInfo> {
               ),
               InkWell(
                 onTap: () async {
-                  Receiver_Mobile_No = dialCodeDigits + "-" + number;
+                  Receiver_Dial_code = dialCodeDigits;
+                  Receiver_Mobile_No = number;
                   if (_formkey.currentState!.validate()) {
                     setState(() {
                       name = _Namecontroller.text;

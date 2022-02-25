@@ -5,6 +5,7 @@ import 'package:myproject/User_Pages/User_Details/BusinessUser/BusinessAdharcard
 import 'package:myproject/User_Pages/User_Details/BusinessUser/BusinessCertificateUpload.dart';
 import 'package:myproject/Utils/routes.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BusinessUserDocList extends StatefulWidget {
   @override
@@ -12,6 +13,21 @@ class BusinessUserDocList extends StatefulWidget {
 }
 
 class _BusinessUserDocListState extends State<BusinessUserDocList> {
+  String? MyUserID;
+  void getUserCredentials() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      MyUserID = prefs.getString("UserAuthID");
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserCredentials();
+  }
+
   @override
   String? b;
 
@@ -154,7 +170,7 @@ class _BusinessUserDocListState extends State<BusinessUserDocList> {
                     Navigator.pushNamed(context, MyRoutes.homeRoute);
                     await FirebaseFirestore.instance
                         .collection('Users')
-                        .doc(id)
+                        .doc(MyUserID)
                         .update({
                       'Business name': b,
                     });

@@ -7,6 +7,7 @@ import 'package:myproject/All_User_Pages/Phone_Auth/Phone_Number.dart';
 import 'package:myproject/User_Pages/User_Details/User_Details.dart';
 import 'package:myproject/Utils/routes.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUp extends StatefulWidget {
@@ -46,8 +47,11 @@ class _SignUpState extends State<SignUp> {
     });
   }
 
-  Registration() async {
+  Registration(BuildContext context) async {
+    ProgressDialog pr = ProgressDialog(context);
+
     if (password == conformpassword) {
+      pr.show();
       try {
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: eMail, password: password);
@@ -69,12 +73,15 @@ class _SignUpState extends State<SignUp> {
         });
 
         await Future.delayed(Duration(seconds: 2));
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (BuildContext context) => Phone_Number(),
-          ),
-        );
+        pr.hide().whenComplete(() {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => Phone_Number(),
+            ),
+          );
+        });
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Registration Successfully and logged in"),
@@ -83,36 +90,52 @@ class _SignUpState extends State<SignUp> {
         );
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                "Password is too weak.",
-                style: TextStyle(
-                  color: Colors.white,
+          pr.hide().whenComplete(() {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  "Password is too weak.",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
+                backgroundColor: Colors.black,
               ),
-              backgroundColor: Colors.blueGrey,
-            ),
-          );
+            );
+          });
         } else if (e.code == 'email-already-in-use') {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text("Account already exist."),
-              backgroundColor: Colors.blueGrey,
-            ),
-          );
+          pr.hide().whenComplete(() {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  "Account already exist.",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                backgroundColor: Colors.black,
+              ),
+            );
+          });
         }
       } catch (e) {
         print(e);
       }
     } else {
       print("pass not match");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Password and Confirm Password must be same."),
-          backgroundColor: Colors.blueGrey,
-        ),
-      );
+      pr.hide().whenComplete(() {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "Password and Confirm Password must be same.",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            backgroundColor: Colors.black,
+          ),
+        );
+      });
     }
   }
 
@@ -127,15 +150,56 @@ class _SignUpState extends State<SignUp> {
           child: Column(
             children: [
               SizedBox(
-                height: 70,
+                height: 50,
               ),
-              Text(
-                "Sign up",
-                style: TextStyle(
-                  fontSize: 45,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.deepPurple,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        "S",
+                        style: TextStyle(
+                          fontSize: 65,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.deepPurple,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    "ign ",
+                    style: TextStyle(
+                      fontSize: 45,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueGrey,
+                    ),
+                  ),
+                  Text(
+                    "u",
+                    style: TextStyle(
+                      fontSize: 45,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.deepPurple,
+                    ),
+                  ),
+                  Text(
+                    "p",
+                    style: TextStyle(
+                      fontSize: 75,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueGrey,
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                height: 3,
+                width: 80,
+                color: Colors.black87,
+              ),
+              SizedBox(
+                height: 20,
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
@@ -147,6 +211,7 @@ class _SignUpState extends State<SignUp> {
                   decoration: InputDecoration(
                     labelText: "Firstname",
                     hintText: "Enter Firstname",
+                    prefixIcon: Icon(Icons.account_circle),
                   ),
                   validator: (String? value) {
                     if (value!.isEmpty) {
@@ -166,6 +231,7 @@ class _SignUpState extends State<SignUp> {
                   decoration: InputDecoration(
                     labelText: "Lastname",
                     hintText: "Enter Lastname",
+                    prefixIcon: Icon(Icons.account_circle),
                   ),
                   validator: (String? value) {
                     if (value!.isEmpty) {
@@ -185,6 +251,7 @@ class _SignUpState extends State<SignUp> {
                   decoration: InputDecoration(
                     labelText: "Email",
                     hintText: "Enter Email",
+                    prefixIcon: Icon(Icons.email),
                   ),
                   validator: (String? value) {
                     if (value!.isEmpty) {
@@ -205,6 +272,7 @@ class _SignUpState extends State<SignUp> {
                   decoration: InputDecoration(
                     labelText: "Password",
                     hintText: "Enter Password",
+                    prefixIcon: Icon(Icons.lock),
                     suffixIcon: InkWell(
                       onTap: _showPassword,
                       child: Icon(
@@ -228,6 +296,7 @@ class _SignUpState extends State<SignUp> {
                   decoration: InputDecoration(
                     labelText: "Confirm Password",
                     hintText: "Enter Confirm Password",
+                    prefixIcon: Icon(Icons.lock),
                     suffixIcon: InkWell(
                       onTap: _confirmShowPass,
                       child: Icon(
@@ -256,7 +325,7 @@ class _SignUpState extends State<SignUp> {
                       password = _passwordController.text;
                       conformpassword = _confirmPasswordController.text;
                     });
-                    Registration();
+                    Registration(context);
                   }
                 },
                 child: AnimatedContainer(
@@ -278,6 +347,14 @@ class _SignUpState extends State<SignUp> {
                           ),
                         ),
                   decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.8),
+                          spreadRadius: 2,
+                          blurRadius: 6,
+                          offset: Offset(0, 2), // changes position of shadow
+                        ),
+                      ],
                       color: Colors.deepPurple,
                       borderRadius:
                           BorderRadius.circular(clickSignUpButton ? 25 : 10)),
@@ -303,7 +380,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        Navigator.pushNamed(context, MyRoutes.loginRoute);
+                        Navigator.pop(context);
                       }),
               ]))
             ],

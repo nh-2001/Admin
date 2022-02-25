@@ -16,6 +16,7 @@ import 'package:myproject/Utils/routes.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:otp_count_down/otp_count_down.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Otp extends StatefulWidget {
@@ -32,7 +33,7 @@ class _OtpState extends State<Otp> {
   final FocusNode _pinCodeFocus = FocusNode();
   String? varificationCode;
   bool codeNotSent = true;
-  int _duration = 60;
+  int _duration = 120;
 
   final BoxDecoration pinCodeDecoration = BoxDecoration(
       color: Colors.deepPurple,
@@ -152,7 +153,7 @@ class _OtpState extends State<Otp> {
                 child: PinPut(
                   fieldsCount: 6,
                   textStyle: TextStyle(
-                    fontSize: 25,
+                    fontSize: 20,
                     color: Colors.white,
                   ),
                   eachFieldWidth: 40,
@@ -165,7 +166,9 @@ class _OtpState extends State<Otp> {
                   followingFieldDecoration: pinCodeDecoration,
                   pinAnimationType: PinAnimationType.rotation,
                   onSubmit: (pin) async {
+                    ProgressDialog pr = ProgressDialog(context);
                     try {
+                      pr.show();
                       await FirebaseAuth.instance
                           .signInWithCredential(PhoneAuthProvider.credential(
                               verificationId: varificationCode!, smsCode: pin))
@@ -181,22 +184,26 @@ class _OtpState extends State<Otp> {
                             );
                             final prefs = await SharedPreferences.getInstance();
                             await prefs.setString("isMobileAdded", "Yes");
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => User_Details(),
-                              ),
-                            );
+                            pr.hide().whenComplete(() {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => User_Details(),
+                                ),
+                              );
+                            });
                           }
                         },
                       );
                     } catch (e) {
                       FocusScope.of(context).unfocus();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("Invalid OTP"),
-                        ),
-                      );
+                      pr.hide().whenComplete(() {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Invalid OTP"),
+                          ),
+                        );
+                      });
                     }
                   },
                 ),

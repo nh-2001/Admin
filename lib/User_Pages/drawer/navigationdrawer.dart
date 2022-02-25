@@ -31,11 +31,17 @@ class _navigationDrawerState extends State<navigationDrawer> {
         style: TextStyle(color: Colors.deepPurple),
       ),
       onPressed: () async {
-        print(login);
-        if (login == 1) {
+        print(isGoogle);
+        if (isGoogle == null) {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.remove("isDetailsAdded");
+          await prefs.remove("isMobileAdded");
           FirebaseAuth.instance.signOut();
           Navigator.pushNamed(context, MyRoutes.initialRoute);
-        } else if (login == 2) {
+        } else if (isGoogle != null) {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.remove("isDetailsAdded");
+          await prefs.remove("isMobileAdded");
           final provider =
               Provider.of<GoogleSignInProvider>(context, listen: false);
           provider.Logout();
@@ -62,9 +68,20 @@ class _navigationDrawerState extends State<navigationDrawer> {
   }
 
   String? MyUserID;
+  String? isGoogle;
   void getUserCredentioals() async {
     final prefs = await SharedPreferences.getInstance();
-    MyUserID = prefs.getString('UserAuthID');
+    setState(() {
+      MyUserID = prefs.getString("UserAuthID");
+      isGoogle = prefs.getString("isGoogle");
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserCredentioals();
   }
 
   @override
@@ -87,10 +104,10 @@ class _navigationDrawerState extends State<navigationDrawer> {
                 context, MyRoutes.myProfileRoute),
           ),
           createDrawerBodyItem(
-            icon: Icons.shopping_basket,
-            text: 'Orders',
+            icon: Icons.history,
+            text: 'History',
             onTap: () =>
-                Navigator.pushReplacementNamed(context, MyRoutes.myOrdersRoot),
+                Navigator.pushReplacementNamed(context, MyRoutes.myHistory),
           ),
           Divider(),
           createDrawerBodyItem(

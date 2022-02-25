@@ -124,13 +124,31 @@ class _Login_PageState extends State<Login_Page> {
             child: Column(
               children: [
                 Image.asset("Assets/Images/Login_Page/Login_Image.png"),
-                Text(
-                  "Login",
-                  style: TextStyle(
-                    fontSize: 45,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.deepPurple,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "L",
+                      style: TextStyle(
+                        fontSize: 75,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.deepPurple,
+                      ),
+                    ),
+                    Text(
+                      "ogin",
+                      style: TextStyle(
+                        fontSize: 45,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blueGrey,
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  height: 3,
+                  width: 60,
+                  color: Colors.black87,
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -142,6 +160,7 @@ class _Login_PageState extends State<Login_Page> {
                     decoration: InputDecoration(
                       labelText: "Email",
                       hintText: "Enter Email",
+                      prefixIcon: Icon(Icons.email),
                     ),
                     validator: (String? value) {
                       if (value!.isEmpty) {
@@ -159,6 +178,7 @@ class _Login_PageState extends State<Login_Page> {
                     decoration: InputDecoration(
                       labelText: "Password",
                       hintText: "Enter Password",
+                      prefixIcon: Icon(Icons.lock),
                       suffixIcon: InkWell(
                         onTap: _showPassword,
                         child: Icon(
@@ -217,12 +237,20 @@ class _Login_PageState extends State<Login_Page> {
                         : Text(
                             "login",
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 20,
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                     decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.8),
+                            spreadRadius: 2,
+                            blurRadius: 6,
+                            offset: Offset(0, 2), // changes position of shadow
+                          ),
+                        ],
                         color: Colors.deepPurple,
                         borderRadius:
                             BorderRadius.circular(clickSignUpButton ? 25 : 10)),

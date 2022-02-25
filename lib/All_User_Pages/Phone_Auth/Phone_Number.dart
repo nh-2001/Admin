@@ -44,54 +44,46 @@ class _Phone_NumberState extends State<Phone_Number> {
   var lastName = "";
   var Email = "";
 
-  void add_to_db(BuildContext context) {
-    if (login == 2) {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserCredentials();
+  }
+
+  String? MyUserID;
+  String? isGoogle;
+  void getUserCredentials() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isGoogle = prefs.getString("isGoogle");
+    });
+    if (isGoogle != null) {
+      print(isGoogle);
+      MyUserID = FirebaseAuth.instance.currentUser!.uid;
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString("UserAuthID", MyUserID.toString());
       var user = FirebaseAuth.instance.currentUser;
       final names = user!.displayName.toString().split(' ');
       firstName = names[0];
       lastName = names.length > 1 ? names[1] : '';
       Email = user.email.toString();
-      FirebaseFirestore.instance.collection("Users").add({
+      await prefs.setString("Firstname", firstName);
+      await prefs.setString("Lastname", lastName);
+      FirebaseFirestore.instance.collection("Users").doc(MyUserID).set({
         'First Name': firstName,
         'Last Name': lastName,
         'Email': Email,
-      }).then((value) {
-        id = value.id;
-        LogInid = id;
       });
-    }
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) => add_to_db(context));
-    getUserCredentials();
-  }
-
-  String? MyUserID;
-  void getUserCredentials() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
+    } else {
       MyUserID = prefs.getString("UserAuthID");
-    });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     print(MyUserID);
-    if (login == 2) {
-      firstname = firstName;
-      lastname = lastName;
-      eMail = Email;
-    }
-
-    if (login == 2) {
-      print(firstName);
-      print(lastName);
-      print(email);
-    }
+    print(isGoogle);
 
     return WillPopScope(
       onWillPop: () {

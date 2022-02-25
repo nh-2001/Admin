@@ -74,6 +74,9 @@ class _NonBusinessUserDocListState extends State<NonBusinessUserDocList> {
                 ),
               ),
             ),
+            SizedBox(
+              height: 50,
+            ),
             InkWell(
               onTap: () async {
                 final prefs = await SharedPreferences.getInstance();
@@ -94,8 +97,16 @@ class _NonBusinessUserDocListState extends State<NonBusinessUserDocList> {
                   ),
                 ),
                 decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.8),
+                        spreadRadius: 2,
+                        blurRadius: 6,
+                        offset: Offset(0, 2), // changes position of shadow
+                      ),
+                    ],
                     color: Colors.deepPurple,
-                    borderRadius: BorderRadius.circular(25)),
+                    borderRadius: BorderRadius.circular(15)),
               ),
             ),
           ],

@@ -21,7 +21,7 @@ import 'package:myproject/All_User_Pages/google_sign_in/google_sign_in.dart';
 import 'package:myproject/User_Pages/Feedback_Page/Feedback.dart';
 import 'package:myproject/User_Pages/Map/Map_Screen.dart';
 import 'package:myproject/User_Pages/Home_Page/Home_Page.dart';
-import 'package:myproject/User_Pages/MyOrders/MyOrders.dart';
+import 'package:myproject/User_Pages/MyHistory/MyHistory.dart';
 import 'package:myproject/User_Pages/Payment/Payment.dart';
 import 'package:myproject/User_Pages/Profile/Profile.dart';
 import 'package:myproject/User_Pages/ReceiverInfo/ReceiverInfo.dart';
@@ -78,14 +78,14 @@ class MyApp extends StatelessWidget {
           builder: EasyLoading.init(),
           darkTheme: ThemeData(primarySwatch: Colors.brown),
           routes: {
-            MyRoutes.initialRoute: (context) => Initial_Page(),
+            MyRoutes.initialRoute: (context) => TripDetails(),
             MyRoutes.homeRoute: (context) => Home_Page(),
             MyRoutes.loginRoute: (context) => Login_Page(),
             MyRoutes.signUpRoute: (context) => SignUp(),
             MyRoutes.forgotPasswordRoute: (context) => Forgot_password(),
             //MyRoutes.phoneVerification: (context) => Phone_Number(),
             MyRoutes.myProfileRoute: (context) => Profile(),
-            MyRoutes.myOrdersRoot: (context) => MyOrders(),
+            MyRoutes.myHistory: (context) => MyHistory(),
             MyRoutes.AdminDashboard: (context) => Dashboard(),
             MyRoutes.Drivers: (context) => Drivers(),
             MyRoutes.Users: (context) => Users(),

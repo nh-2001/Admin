@@ -7,6 +7,7 @@ import 'package:myproject/User_Pages/User_Details/API/Firebase_API.dart';
 import 'package:myproject/User_Pages/User_Details/Widget/Button_Widget.dart';
 import 'package:path/path.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BusinessCertificateUpload extends StatefulWidget {
   @override
@@ -25,12 +26,22 @@ class _BusinessCertificateUploadState extends State<BusinessCertificateUpload> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getUserCredentials();
     uploadFile();
+  }
+
+  String? MyUserID;
+  void getUserCredentials() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      MyUserID = prefs.getString("UserAuthID");
+    });
   }
 
   var User;
   @override
   Widget build(BuildContext context) {
+    print(MyUserID);
     final fileName = file != null ? basename(file!.path) : 'No File Selected';
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -73,6 +84,7 @@ class _BusinessCertificateUploadState extends State<BusinessCertificateUpload> {
             SizedBox(height: 330),
             InkWell(
               onTap: () async {
+                print(MyUserID);
                 if (image_pick) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -84,7 +96,7 @@ class _BusinessCertificateUploadState extends State<BusinessCertificateUpload> {
                 } else {
                   await FirebaseFirestore.instance
                       .collection('Users')
-                      .doc(id)
+                      .doc(MyUserID)
                       .update({
                     'business certificate': urlDownload,
                   });

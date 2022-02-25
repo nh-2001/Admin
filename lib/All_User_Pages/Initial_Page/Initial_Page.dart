@@ -11,6 +11,7 @@ import 'package:myproject/User_Pages/User_Details/User_Details.dart';
 import 'package:myproject/Utils/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class Initial_Page extends StatefulWidget {
   @override
@@ -53,6 +54,8 @@ class _Initial_PageState extends State<Initial_Page> {
 
   @override
   Widget build(BuildContext context) {
+    ProgressDialog pr = ProgressDialog(context);
+
     return WillPopScope(
       onWillPop: () async {
         Navigator.pop(context);
@@ -107,9 +110,11 @@ class _Initial_PageState extends State<Initial_Page> {
                         height: 60,
                       ),
                       InkWell(
-                        onTap: () {
-                          login = 1;
-                          Navigator.pushNamed(context, MyRoutes.loginRoute);
+                        onTap: () async {
+                          await pr.show();
+                          pr.hide().whenComplete(() {
+                            Navigator.pushNamed(context, MyRoutes.loginRoute);
+                          });
                         },
                         child: Container(
                           height: 55,
@@ -134,24 +139,29 @@ class _Initial_PageState extends State<Initial_Page> {
                             ),
                           )),
                           decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: Colors.deepPurpleAccent,
-                                width: 3,
-                              )),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.deepPurpleAccent,
+                              width: 3,
+                            ),
+                          ),
                         ),
                       ),
                       SizedBox(
                         height: 30,
                       ),
                       InkWell(
-                        onTap: () {
-                          login = 2;
+                        onTap: () async {
+                          await pr.show();
+                          final prefs = await SharedPreferences.getInstance();
+                          await prefs.setString("isGoogle", "Yes");
                           final provider = Provider.of<GoogleSignInProvider>(
                               context,
                               listen: false);
-                          provider.googleLogin();
+                          pr.hide().whenComplete(() {
+                            provider.googleLogin();
+                          });
                         },
                         child: Container(
                           height: 55,

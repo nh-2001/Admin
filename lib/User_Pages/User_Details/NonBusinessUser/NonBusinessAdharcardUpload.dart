@@ -7,6 +7,7 @@ import 'package:myproject/User_Pages/User_Details/API/Firebase_API.dart';
 import 'package:myproject/User_Pages/User_Details/Widget/Button_Widget.dart';
 import 'package:path/path.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NonBusinessAdharcardUpload extends StatefulWidget {
@@ -74,11 +75,24 @@ class _NonBusinessAdharcardUploadState
               text: 'Upload File',
               icon: Icons.cloud_upload_outlined,
               onClicked: () async {
-                uploadFile();
+                if (image_pick) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          "No selected file, Please select the file first."),
+                      backgroundColor: Colors.black,
+                    ),
+                  );
+                } else {
+                  uploadFile();
+                }
               },
             ),
             SizedBox(height: 32),
-            task != null ? buildUploadStatus(task!) : Container(),
+            Container(
+              height: 40,
+              child: task != null ? buildUploadStatus(task!) : Container(),
+            ),
             SizedBox(height: 330),
             InkWell(
               onTap: () async {
@@ -87,7 +101,7 @@ class _NonBusinessAdharcardUploadState
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text("Please upload your aadhar card file."),
-                      backgroundColor: Colors.red,
+                      backgroundColor: Colors.black,
                     ),
                   );
                 } else {
@@ -114,8 +128,16 @@ class _NonBusinessAdharcardUploadState
                   ),
                 ),
                 decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.8),
+                        spreadRadius: 2,
+                        blurRadius: 6,
+                        offset: Offset(0, 2), // changes position of shadow
+                      ),
+                    ],
                     color: Colors.deepPurple,
-                    borderRadius: BorderRadius.circular(25)),
+                    borderRadius: BorderRadius.circular(15)),
               ),
             ),
           ],
@@ -165,9 +187,11 @@ class _NonBusinessAdharcardUploadState
             final progress = snap.bytesTransferred / snap.totalBytes;
             final percentage = (progress * 100).toStringAsFixed(2);
 
-            return Text(
-              '$percentage %',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            return Container(
+              child: Text(
+                '$percentage %',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
             );
           } else {
             return Container();

@@ -6,6 +6,7 @@ import 'package:myproject/User_Pages/TripDetails/tripDetails.dart';
 import 'package:myproject/User_Pages/User_Details/User_Details.dart';
 import 'package:myproject/User_Pages/WaitingScreen/WaitingScreen.dart';
 import 'package:myproject/Utils/routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 String Driverid = "";
@@ -14,12 +15,9 @@ String? DriverName;
 String? VehicleName;
 String? VehicleNo;
 
-class VehicleDetails extends StatelessWidget {
+class VehicleDetails extends StatefulWidget {
   String Vehicleid = "";
 
-  String reqid = "";
-  String adharcard = "";
-  String businessCertificate = "";
   String? Source;
   String? Destination;
   String? Distance;
@@ -30,6 +28,26 @@ class VehicleDetails extends StatelessWidget {
       this.Destination,
       this.Distance})
       : super(key: key);
+
+  @override
+  State<VehicleDetails> createState() => _VehicleDetailsState();
+}
+
+class _VehicleDetailsState extends State<VehicleDetails> {
+  String reqid = "";
+
+  String adharcard = "";
+
+  String businessCertificate = "";
+
+  String? MyUserID;
+
+  void getUserCredentials() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      MyUserID = prefs.getString("UserAuthID");
+    });
+  }
 
   Widget build(BuildContext context) {
     Future<void> _launchInBrowser(String url) async {
@@ -50,7 +68,7 @@ class VehicleDetails extends StatelessWidget {
         title: Text("Vehicle Detail"),
       ),
       body: FutureBuilder<DocumentSnapshot>(
-        future: users.doc(Vehicleid).get(),
+        future: users.doc(widget.Vehicleid).get(),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
@@ -155,9 +173,9 @@ class VehicleDetails extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () async {
-                        print(Source);
-                        print(Destination);
-                        print(Distance);
+                        print(widget.Source);
+                        print(widget.Destination);
+                        print(widget.Distance);
                         print(data['Driver Id']);
                         Driverid = data['Driver Id'];
                         await FirebaseFirestore.instance
@@ -170,16 +188,19 @@ class VehicleDetails extends StatelessWidget {
                             "First Name": Firstname,
                             "Last Name": Lastname,
                             "Mobile Number": MobNo,
-                            "Strarting Point": Source,
-                            "Destinetion Point": Destination,
-                            "Distance": Distance,
+                            "Strarting Point": widget.Source,
+                            "Destinetion Point": widget.Destination,
+                            "Distance": widget.Distance,
                             "Goods Type": goodsType,
                             "Date": date,
                             "Time": time,
+                            "Receiver Code Digit": Receiver_Dial_code,
                             "Receiver Mob. No.": Receiver_Mobile_No,
                             "Receiver First Name": Receiver_firstname,
                             "Receiver Last Name": Receiver_lastname,
                             "Status": "0",
+                            "UserID": MyUserID,
+                            "Price": PricePerKM
                           },
                         ).then(
                           (value) {

@@ -7,6 +7,7 @@ import 'package:myproject/User_Pages/User_Details/API/Firebase_API.dart';
 import 'package:myproject/User_Pages/User_Details/Widget/Button_Widget.dart';
 import 'package:path/path.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BusinessAdharcardUpload extends StatefulWidget {
   @override
@@ -21,16 +22,27 @@ class _BusinessAdharcardUploadState extends State<BusinessAdharcardUpload> {
   String? urlDownload;
   bool image_pick = true;
   TextEditingController _BusinessNamecontroller = TextEditingController();
+
+  String? MyUserID;
+  void getUserCredentials() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      MyUserID = prefs.getString("UserAuthID");
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getUserCredentials();
     uploadFile();
   }
 
   var User;
   @override
   Widget build(BuildContext context) {
+    print(MyUserID);
     final fileName = file != null ? basename(file!.path) : 'No File Selected';
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -73,6 +85,7 @@ class _BusinessAdharcardUploadState extends State<BusinessAdharcardUpload> {
             SizedBox(height: 330),
             InkWell(
               onTap: () async {
+                print(MyUserID);
                 if (image_pick) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -83,7 +96,7 @@ class _BusinessAdharcardUploadState extends State<BusinessAdharcardUpload> {
                 } else {
                   await FirebaseFirestore.instance
                       .collection('Users')
-                      .doc(id)
+                      .doc(MyUserID)
                       .update({
                     'aadhar card': urlDownload,
                   });

@@ -1,38 +1,39 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:myproject/Admin_Pages/Users/Business_User_DetailsPage.dart';
-import 'package:myproject/User_Pages/SelectVehicle/VehicleDetails.dart';
-import 'package:myproject/User_Pages/TripDetails/tripDetails.dart';
-import 'package:myproject/User_Pages/WaitingScreen/WaitingScreen.dart';
+import 'package:myproject/Admin_Pages/drawer/navigationdrawer.dart';
+import 'package:myproject/User_Pages/MyHistory/MyHistoryDetails.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Select_Vehicle extends StatefulWidget {
-  String? Source;
-  String? Destination;
-  String? Distance;
-
-  Select_Vehicle({Key? key, this.Source, this.Destination, this.Distance})
-      : super(key: key);
-
+class MyHistory extends StatefulWidget {
   @override
-  State<Select_Vehicle> createState() => _Select_VehicleState();
+  State<MyHistory> createState() => _MyHistoryState();
 }
 
-class _Select_VehicleState extends State<Select_Vehicle> {
+class _MyHistoryState extends State<MyHistory> {
+  String histId = "";
   final db = FirebaseFirestore.instance;
 
-  String Vehicleid = "";
+  String? MyUserID;
+  void getUserCredentials() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      MyUserID = prefs.getString("UserAuthID");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Select Vehicle"),
+        title: Text(
+          "My History",
+        ),
       ),
+      drawer: navigationDrawerAdmin(),
       body: StreamBuilder<QuerySnapshot>(
         stream: db
-            .collection('vehicle')
-            .where("Approved", isEqualTo: "Yes")
-            .where("Vehicle Name", isEqualTo: vehicleType)
+            .collection('History')
+            .where("User ID", isEqualTo: MyUserID)
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -41,11 +42,7 @@ class _Select_VehicleState extends State<Select_Vehicle> {
             );
           }
           if (snapshot.data!.size == 0) {
-            return new Scaffold(
-              body: Center(
-                child: Text("No Vehicle"),
-              ),
-            );
+            return new Scaffold(body: Center(child: Text("No History")));
           } else {
             return Padding(
               padding: const EdgeInsets.only(top: 10),
@@ -59,29 +56,30 @@ class _Select_VehicleState extends State<Select_Vehicle> {
                           borderOnForeground: true,
                           elevation: 4,
                           child: new ListTile(
-                            title: new Text(doc["First Name"] ?? ""),
+                            title: new Text(
+                              doc["Driver First Name"] ?? "",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                             leading: CircleAvatar(
                               radius: 25.0,
-                              backgroundImage:
-                                  NetworkImage(doc["Vehicle Image"]),
+                              backgroundImage: NetworkImage(
+                                doc["Driver Img"],
+                              ),
                               backgroundColor: Colors.transparent,
                             ),
                             onTap: () {
-                              Vehicleid = doc.id;
-                              print(Vehicleid);
+                              histId = doc.id;
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => VehicleDetails(
-                                    Vehicleid: Vehicleid,
-                                    Source: widget.Source,
-                                    Destination: widget.Destination,
-                                    Distance: widget.Distance,
+                                  builder: (context) => MyHistoryDetails(
+                                    histID: histId,
                                   ),
                                 ),
                               );
                             },
-                            subtitle: Text(
-                                'A sufficiently long subtitle warrants three lines.'),
                           ),
                         ),
                       ),

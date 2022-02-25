@@ -7,7 +7,7 @@ class MyRoutes {
   //static String phoneVerification = "/phonevarification";
   static String sidebarLayout = "/sidebarlayout";
   static String myProfileRoute = "/myProfile";
-  static String myOrdersRoot = "/myOrders";
+  static String myHistory = "/myhistory";
   static String AdminDashboard = "/adminDashboard";
   static String Drivers = "/drivers";
   static String Users = "/users";

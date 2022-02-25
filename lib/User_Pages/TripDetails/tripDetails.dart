@@ -18,6 +18,8 @@ class TripDetails extends StatefulWidget {
 
 String goodsType = "";
 String? date, time;
+String? vehicleType;
+String? price;
 
 class _TripDetailsState extends State<TripDetails> {
   // create TimeOfDay variable
@@ -77,23 +79,52 @@ class _TripDetailsState extends State<TripDetails> {
                   height: 20,
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 20, 20, 30),
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
                   child: DropdownSearch<String>(
-                      mode: Mode.MENU,
-                      showSelectedItems: true,
-                      items: [
-                        "Cloths",
-                        "Food",
-                        "Cars",
-                        "Flowers",
-                      ],
-                      label: "Type of goods",
-                      hint: "country in menu mode",
-                      popupItemDisabled: (String s) => s.startsWith('I'),
-                      onChanged: (data) {
-                        goodsType = data!;
-                      },
-                      selectedItem: "Cloths"),
+                    mode: Mode.MENU,
+                    showSelectedItems: true,
+                    items: [
+                      "Cloths",
+                      "Food",
+                      "Cars",
+                      "Flowers",
+                    ],
+                    label: "Type of Goods",
+                    hint: "Select Goods Type",
+                    popupItemDisabled: (String s) => s.startsWith('I'),
+                    validator: (value) =>
+                        value == null ? "Goods type Can't be Empty." : null,
+                    onChanged: (data) {
+                      goodsType = data!;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  child: DropdownSearch<String>(
+                    mode: Mode.MENU,
+                    showSelectedItems: true,
+                    // ignore: prefer_const_literals_to_create_immutables
+                    items: [
+                      "ACE/Dost/PICKUP (1.5 TON)",
+                      "TATA 407/EICHER 14FT (4 TON)",
+                      "EICHER 17FT (5 TON)",
+                      "EICHER 19FT (7 TON)",
+                      "TATA TRUCK  (10 TON)",
+                      "20FT CONTAINER (6.5 TON)",
+                      "32FT CONTAINER (14 TON)",
+                      "32/40 FEET OPEN TRAILER"
+                    ],
+                    label: "Type Of Vehicle",
+                    hint: "Select Vehicle Type",
+                    popupItemDisabled: (String s) => s.startsWith('I'),
+                    validator: (value) =>
+                        value == null ? "Vehicle type Can't be Empty." : null,
+                    onChanged: (value) {
+                      vehicleType = value!;
+                      print(vehicleType);
+                    },
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 10, 20, 30),
