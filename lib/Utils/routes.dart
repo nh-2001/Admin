@@ -24,4 +24,6 @@ class MyRoutes {
   static String RejectedDrivers = "/rejecteddriver";
   static String TripsOnTheWay = "/tripsontheway";
   static String PaymentScreen = "/paymentscreen";
+  static String MyAdminHistory = "/myadminhistory";
+  static String widrawrequest = "/widrawrequest";
 }

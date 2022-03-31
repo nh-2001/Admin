@@ -169,6 +169,15 @@ class Driver_ItSelf_Not_Owner_Details_Page1 extends StatelessWidget {
                           ),
                         ),
                         decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.8),
+                                spreadRadius: 2,
+                                blurRadius: 6,
+                                offset:
+                                    Offset(0, 2), // changes position of shadow
+                              ),
+                            ],
                             color: Colors.deepPurple,
                             borderRadius: BorderRadius.circular(15)),
                       ),

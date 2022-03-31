@@ -13,7 +13,7 @@ class CompletedTripDetails extends StatelessWidget {
         FirebaseFirestore.instance.collection('History');
     return Scaffold(
       appBar: AppBar(
-        title: Text("Histoty Request"),
+        title: Text("History Details"),
       ),
       body: FutureBuilder<DocumentSnapshot>(
         future: users.doc(histID).get(),
@@ -23,104 +23,249 @@ class CompletedTripDetails extends StatelessWidget {
             Map<String, dynamic> data =
                 snapshot.data!.data() as Map<String, dynamic>;
 
-            return Material(
-              child: Center(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 30,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        showDialogFunc(context, data["User Img"]);
-                      },
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Stack(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.white, width: 5),
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(100),
+            return SingleChildScrollView(
+              child: Material(
+                child: Center(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 30,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          showDialogFunc(
+                              context, data["User Img"], "User Image");
+                        },
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Stack(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Colors.white, width: 5),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(100),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      spreadRadius: 4,
+                                      blurRadius: 20,
+                                      color: Colors.black.withOpacity(0.1),
+                                      offset: Offset(5, 15),
+                                    )
+                                  ],
                                 ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    spreadRadius: 4,
-                                    blurRadius: 20,
-                                    color: Colors.black.withOpacity(0.1),
-                                    offset: Offset(5, 15),
-                                  )
-                                ],
-                              ),
-                              child: ClipOval(
-                                child: Image.network(
-                                  data["User Img"],
-                                  width: 130,
-                                  height: 130,
-                                  fit: BoxFit.cover,
+                                child: ClipOval(
+                                  child: Image.network(
+                                    data["User Img"],
+                                    width: 130,
+                                    height: 130,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Divider(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Name : ${data['First Name']} ${data['Last Name']}",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Divider(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "From : ${data['Strarting Point']}",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      "To : ${data['Destinetion Point']}",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Divider(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Distance : ${data['Distance']} Km",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    Divider(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Total Cost : ${data['Total Cost']} Km",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ],
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "User : ",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "${data['User First Name']} ${data['User Last Name']}",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Divider(),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          showDialogFunc(
+                              context, data["Driver Img"], "Driver Image");
+                        },
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Stack(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Colors.white, width: 5),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(100),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      spreadRadius: 4,
+                                      blurRadius: 20,
+                                      color: Colors.black.withOpacity(0.1),
+                                      offset: Offset(5, 15),
+                                    )
+                                  ],
+                                ),
+                                child: ClipOval(
+                                  child: Image.network(
+                                    data["Driver Img"],
+                                    width: 130,
+                                    height: 130,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Driver : ",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "${data['Driver First Name']} ${data['Driver Last Name']}",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Divider(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "From : ",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width - 20,
+                                child: Text(
+                                  "${data['Starting Point']}",
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "To : ",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width - 20,
+                                child: Text(
+                                  "${data['Destination Point']}",
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Divider(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Distance : ",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "${data['Distance']} Km",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Divider(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Total Cost : ",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            " ${data['Total Cost']} Rs",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Divider(),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -135,7 +280,7 @@ class CompletedTripDetails extends StatelessWidget {
   }
 }
 
-showDialogFunc(context, img) {
+showDialogFunc(context, img, text) {
   return showDialog(
     context: context,
     builder: (context) {
@@ -157,7 +302,7 @@ showDialogFunc(context, img) {
                   height: 10,
                 ),
                 Text(
-                  "Vehicle Image",
+                  text,
                   style: TextStyle(fontSize: 18),
                 ),
                 SizedBox(

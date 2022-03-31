@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:myproject/Admin_Pages/Drivers/Accpted_Rejected_driver.dart/AcceptedDriverDetails.dart';
 import 'package:myproject/Admin_Pages/Drivers/DriverItselfOwner/DriverselfOwerDetails.dart';
 import 'package:myproject/Admin_Pages/drawer/navigationdrawer.dart';
 
@@ -51,25 +52,57 @@ class _Accepted_DriversState extends State<Accepted_Drivers> {
                           borderOnForeground: true,
                           elevation: 4,
                           child: new ListTile(
-                            title: new Text(doc["First Name"] ?? ""),
+                            title: Row(
+                              children: [
+                                Text(
+                                  doc["First Name"] ?? "",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  doc["Last Name"] ?? "",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
                             leading: CircleAvatar(
-                              radius: 25.0,
+                              radius: 30.0,
                               backgroundImage:
                                   NetworkImage(doc["Driver Image"]),
                               backgroundColor: Colors.transparent,
                             ),
                             onTap: () {
-                              id = doc.id;
-                              print(id);
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      Driver_ItSelf_Owner_Details(id: id),
-                                ),
-                              );
+                              if (doc["Owner Of Vehicle"] == "Yes") {
+                                id = doc.id;
+                                print(id);
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        AcceptedDriverDetails(id: id),
+                                  ),
+                                );
+                              } else if (doc["Owner Of Vehicle"] == "No") {
+                                // id = doc.id;
+                                // print(id);
+                                // Navigator.of(context).push(
+                                //   MaterialPageRoute(
+                                //     builder: (context) =>
+                                //         Driver_ItSelf_Not_Owner_Details(id: id),
+                                //   ),
+                                // );
+                              }
                             },
-                            subtitle: Text(
-                                'A sufficiently long subtitle warrants three lines.'),
+                            subtitle: Text(doc["Owner Of Vehicle"] == "Yes"
+                                ? "Driver itself owner"
+                                : "Driver itself not owner"),
                           ),
                         ),
                       ),

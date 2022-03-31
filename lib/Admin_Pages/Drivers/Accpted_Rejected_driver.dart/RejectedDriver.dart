@@ -48,7 +48,27 @@ class _Rejected_DriversState extends State<Rejected_Drivers> {
                           borderOnForeground: true,
                           elevation: 4,
                           child: new ListTile(
-                            title: new Text(doc["First Name"] ?? ""),
+                            title: Row(
+                              children: [
+                                Text(
+                                  doc["First Name"] ?? "",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  doc["Last Name"] ?? "",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
                             leading: CircleAvatar(
                               radius: 25.0,
                               backgroundImage:
@@ -65,8 +85,9 @@ class _Rejected_DriversState extends State<Rejected_Drivers> {
                                 ),
                               );
                             },
-                            subtitle: Text(
-                                'A sufficiently long subtitle warrants three lines.'),
+                            subtitle: Text(doc["Owner Of Vehicle"] == "Yes"
+                                ? "Driver itself owner"
+                                : "Driver itself not owner"),
                           ),
                         ),
                       ),

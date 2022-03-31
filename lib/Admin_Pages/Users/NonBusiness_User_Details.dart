@@ -137,10 +137,19 @@ class NonBusiness_UserDetails extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      "First Name : ${data['First Name']}",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "First Name : ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "${data['First Name']}",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 10,
@@ -149,10 +158,21 @@ class NonBusiness_UserDetails extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      "Last Name : ${data['Last Name']}",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Last Name : ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "${data['Last Name']}",
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 10,
@@ -161,10 +181,21 @@ class NonBusiness_UserDetails extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      "DOB : ${data['DOB']}",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "DOB : ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "${data['DOB']}",
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 10,
@@ -174,7 +205,7 @@ class NonBusiness_UserDetails extends StatelessWidget {
                       onPressed: () {
                         _launchInBrowser(adharcard);
                       },
-                      child: Text("Press to view Aadhar card"),
+                      child: Text("Tap to view Aadhar card"),
                     ),
                     Divider(),
                     SizedBox(
@@ -184,7 +215,7 @@ class NonBusiness_UserDetails extends StatelessWidget {
                       onPressed: () {
                         showAlertDialog(context);
                       },
-                      child: Text("Block user"),
+                      child: Text("Block User"),
                     ),
                   ],
                 ),

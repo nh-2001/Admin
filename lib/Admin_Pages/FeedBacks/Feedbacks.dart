@@ -3,7 +3,8 @@ import 'package:myproject/Admin_Pages/FeedBacks/Driver_Feedback.dart';
 import 'package:myproject/Admin_Pages/FeedBacks/User_Feedback.dart';
 import 'package:myproject/Admin_Pages/Users/Users.dart';
 import 'package:myproject/Admin_Pages/drawer/navigationdrawer.dart';
-import 'package:myproject/User_Pages/drawer/navigationdrawer.dart';
+
+import '../../Utils/routes.dart';
 
 class Admin_Feedback_Screen extends StatefulWidget {
   @override
@@ -20,22 +21,29 @@ class _Admin_Feedback_ScreenState extends State<Admin_Feedback_Screen> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
-      child: Scaffold(
-        drawer: navigationDrawerAdmin(),
-        appBar: AppBar(
-          title: Text("Feedbacks"),
-          bottom: TabBar(
-            tabs: [
-              Tab(
-                text: "User Feedback",
-              ),
-              Tab(
-                text: "Driver Feedback",
-              ),
-            ],
+      child: WillPopScope(
+        onWillPop: () async {
+          await Navigator.pushReplacementNamed(
+              context, MyRoutes.AdminDashboard);
+          return true;
+        },
+        child: Scaffold(
+          drawer: navigationDrawerAdmin(),
+          appBar: AppBar(
+            title: Text("Feedbacks"),
+            bottom: TabBar(
+              tabs: [
+                Tab(
+                  text: "User Feedback",
+                ),
+                Tab(
+                  text: "Driver Feedback",
+                ),
+              ],
+            ),
           ),
+          body: Center(child: TabBarView(children: _tabs)),
         ),
-        body: Center(child: TabBarView(children: _tabs)),
       ),
     );
   }

@@ -31,7 +31,7 @@ class Driver_ItSelf_Not_Owner_Details_Page2 extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        showDialogFunc(context, data["Driver Image"]);
+                        showDialogFunc(context, data["Vehicle Image"]);
                       },
                       child: Align(
                         alignment: Alignment.center,
@@ -73,10 +73,28 @@ class Driver_ItSelf_Not_Owner_Details_Page2 extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      "Vehicle Name : ${data['Vehicle Name']}",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              "Vehicle Name : ",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "${data['Vehicle Name']}",
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 10,
@@ -85,10 +103,21 @@ class Driver_ItSelf_Not_Owner_Details_Page2 extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      "Vehicle No : ${data['Vehicle No']}",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Vehicle No : ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "${data['Vehicle No']}",
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 10,
@@ -97,17 +126,28 @@ class Driver_ItSelf_Not_Owner_Details_Page2 extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      "Year of Model : ${data['Year of Model']}",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Year of Model : ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "${data['Year of Model']}",
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     Divider(),
                     SizedBox(
-                      height: 260,
+                      height: 220,
                     ),
                     InkWell(
                       onTap: () {
@@ -132,6 +172,15 @@ class Driver_ItSelf_Not_Owner_Details_Page2 extends StatelessWidget {
                           ),
                         ),
                         decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.8),
+                                spreadRadius: 2,
+                                blurRadius: 6,
+                                offset:
+                                    Offset(0, 2), // changes position of shadow
+                              ),
+                            ],
                             color: Colors.deepPurple,
                             borderRadius: BorderRadius.circular(15)),
                       ),
@@ -173,7 +222,7 @@ showDialogFunc(context, img) {
                   height: 10,
                 ),
                 Text(
-                  "Profile pic",
+                  "Vehicle Image",
                   style: TextStyle(fontSize: 18),
                 ),
                 SizedBox(

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:myproject/Utils/routes.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 String? mid;
 String? vhcid;
@@ -17,165 +18,284 @@ class Driver_ItSelf_Not_Owner_Details_Page4 extends StatelessWidget {
       appBar: AppBar(
         title: Text("Vehicle Owner details"),
       ),
-      body: FutureBuilder<DocumentSnapshot>(
-        future: users.doc(id).get(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            Map<String, dynamic> data =
-                snapshot.data!.data() as Map<String, dynamic>;
-            vhcid = data["Vehicle ID"];
+      body: SingleChildScrollView(
+        child: FutureBuilder<DocumentSnapshot>(
+          future: users.doc(id).get(),
+          builder:
+              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              Map<String, dynamic> data =
+                  snapshot.data!.data() as Map<String, dynamic>;
+              vhcid = data["Vehicle ID"];
 
-            return Material(
-              child: Center(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 30,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        showDialogFunc(context, data["Driver Image"]);
-                      },
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Stack(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.white, width: 5),
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(100),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    spreadRadius: 4,
-                                    blurRadius: 20,
-                                    color: Colors.black.withOpacity(0.1),
-                                    offset: Offset(5, 15),
-                                  )
-                                ],
-                              ),
-                              child: ClipOval(
-                                child: Image.network(
-                                  data["Vehicle Image"],
-                                  width: 130,
-                                  height: 130,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+              return Material(
+                child: Center(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 30,
                       ),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Divider(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "First Name : ${data['Owner First Name']}",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Divider(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Last Name : ${data['Owner Last Name']}",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Divider(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Address : ${data['Owner Address']}",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Divider(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "City : ${data['Owner City']}",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Divider(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "State : ${data['Owner State']}",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Divider(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Mob no. : ${data['Owner Mobile No']}",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Divider(),
-                    InkWell(
-                      onTap: () {},
-                      child: AnimatedContainer(
-                        duration: Duration(seconds: 1),
-                        width: 330,
-                        height: 50,
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Next",
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                      GestureDetector(
+                        onTap: () {
+                          showDialogFunc(context, data["Vehicle Image"]);
+                        },
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Stack(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Colors.white, width: 5),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(100),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      spreadRadius: 4,
+                                      blurRadius: 20,
+                                      color: Colors.black.withOpacity(0.1),
+                                      offset: Offset(5, 15),
+                                    )
+                                  ],
+                                ),
+                                child: ClipOval(
+                                  child: Image.network(
+                                    data["Vehicle Image"],
+                                    width: 130,
+                                    height: 130,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        decoration: BoxDecoration(
-                            color: Colors.deepPurple,
-                            borderRadius: BorderRadius.circular(15)),
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Divider(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "First Name : ",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "${data['Owner First Name']}",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Divider(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Last Name : ",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "${data['Owner Last Name']}",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Divider(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Address : ",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "${data['Owner Address']}",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Divider(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "City : ",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "${data['Owner City']}",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Divider(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "State : ",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "${data['Owner State']}",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Divider(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Mob no. : ",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "${data['Owner Mobile No']}",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Divider(),
+                      SizedBox(
+                        height: 60,
+                      ),
+                      InkWell(
+                        onTap: () async {
+                          showAlertDialog1(context);
+                        },
+                        child: AnimatedContainer(
+                          duration: Duration(seconds: 1),
+                          width: 330,
+                          height: 50,
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Approve Application",
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.8),
+                                  spreadRadius: 2,
+                                  blurRadius: 6,
+                                  offset: Offset(
+                                      0, 2), // changes position of shadow
+                                ),
+                              ],
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(25)),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      InkWell(
+                        onTap: () async {
+                          showAlertDialog(context);
+                        },
+                        child: AnimatedContainer(
+                          duration: Duration(seconds: 1),
+                          width: 330,
+                          height: 50,
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Reject Application",
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.8),
+                                  spreadRadius: 2,
+                                  blurRadius: 6,
+                                  offset: Offset(
+                                      0, 2), // changes position of shadow
+                                ),
+                              ],
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(25)),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 40,
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            );
-          }
+              );
+            }
 
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        },
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ),
       ),
     );
   }
@@ -203,7 +323,7 @@ showDialogFunc(context, img) {
                   height: 10,
                 ),
                 Text(
-                  "Profile pic",
+                  "Vehicle Image",
                   style: TextStyle(fontSize: 18),
                 ),
                 SizedBox(
@@ -241,6 +361,7 @@ showDialogFunc(context, img) {
 }
 
 showAlertDialog(BuildContext context) {
+  ProgressDialog pr = ProgressDialog(context);
   // set up the buttons
   Widget cancelButton = FlatButton(
     child: Text(
@@ -257,6 +378,7 @@ showAlertDialog(BuildContext context) {
       style: TextStyle(color: Colors.deepPurple),
     ),
     onPressed: () async {
+      pr.show();
       await FirebaseFirestore.instance.collection('Driver').doc(mid).update({
         'Approved': '3',
       });
@@ -266,7 +388,9 @@ showAlertDialog(BuildContext context) {
           backgroundColor: Colors.orangeAccent,
         ),
       );
-      Navigator.pushReplacementNamed(context, MyRoutes.AdminDashboard);
+      pr.hide().whenComplete(() {
+        Navigator.pushReplacementNamed(context, MyRoutes.AdminDashboard);
+      });
     },
   );
   // set up the AlertDialog
@@ -288,6 +412,7 @@ showAlertDialog(BuildContext context) {
 }
 
 showAlertDialog1(BuildContext context) {
+  ProgressDialog pr = ProgressDialog(context);
   // set up the buttons
   Widget cancelButton = FlatButton(
     child: Text(
@@ -304,6 +429,7 @@ showAlertDialog1(BuildContext context) {
       style: TextStyle(color: Colors.deepPurple),
     ),
     onPressed: () async {
+      pr.show();
       await FirebaseFirestore.instance.collection('Driver').doc(mid).update({
         'Approved': '2',
       });
@@ -320,7 +446,9 @@ showAlertDialog1(BuildContext context) {
           backgroundColor: Colors.orangeAccent,
         ),
       );
-      Navigator.pushReplacementNamed(context, MyRoutes.AdminDashboard);
+      pr.hide().whenComplete(() {
+        Navigator.pushReplacementNamed(context, MyRoutes.AdminDashboard);
+      });
     },
   );
   // set up the AlertDialog

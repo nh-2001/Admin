@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:myproject/Admin_Pages/Drivers/DriverItselfNotOwner/DriverItselfNotOwnerDetails4.dart';
 import 'package:myproject/Utils/routes.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 String? AadharCard;
@@ -205,6 +206,15 @@ class Driver_ItSelf_Owner_Details_Page3 extends StatelessWidget {
                           ),
                         ),
                         decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.8),
+                                spreadRadius: 2,
+                                blurRadius: 6,
+                                offset:
+                                    Offset(0, 2), // changes position of shadow
+                              ),
+                            ],
                             color: Colors.green,
                             borderRadius: BorderRadius.circular(25)),
                       ),
@@ -230,6 +240,15 @@ class Driver_ItSelf_Owner_Details_Page3 extends StatelessWidget {
                           ),
                         ),
                         decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.8),
+                                spreadRadius: 2,
+                                blurRadius: 6,
+                                offset:
+                                    Offset(0, 2), // changes position of shadow
+                              ),
+                            ],
                             color: Colors.red,
                             borderRadius: BorderRadius.circular(25)),
                       ),
@@ -250,6 +269,7 @@ class Driver_ItSelf_Owner_Details_Page3 extends StatelessWidget {
 }
 
 showAlertDialog(BuildContext context) {
+  ProgressDialog pr = ProgressDialog(context);
   // set up the buttons
   Widget cancelButton = FlatButton(
     child: Text(
@@ -275,7 +295,9 @@ showAlertDialog(BuildContext context) {
           backgroundColor: Colors.orangeAccent,
         ),
       );
-      Navigator.pushReplacementNamed(context, MyRoutes.AdminDashboard);
+      pr.hide().whenComplete(() {
+        Navigator.pushReplacementNamed(context, MyRoutes.AdminDashboard);
+      });
     },
   );
   // set up the AlertDialog
@@ -297,6 +319,7 @@ showAlertDialog(BuildContext context) {
 }
 
 showAlertDialog1(BuildContext context) {
+  ProgressDialog pr = ProgressDialog(context);
   // set up the buttons
   Widget cancelButton = FlatButton(
     child: Text(
@@ -332,7 +355,9 @@ showAlertDialog1(BuildContext context) {
           backgroundColor: Colors.orangeAccent,
         ),
       );
-      Navigator.pushReplacementNamed(context, MyRoutes.AdminDashboard);
+      pr.hide().whenComplete(() {
+        Navigator.pushReplacementNamed(context, MyRoutes.AdminDashboard);
+      });
     },
   );
   // set up the AlertDialog

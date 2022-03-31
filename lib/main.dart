@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:myproject/Admin_Pages/AdminLogin/AdminLogin.dart';
+import 'package:myproject/Admin_Pages/CompletedTrips/CompletedTrips.dart';
 import 'package:myproject/Admin_Pages/Dashboard.dart/Dashboard.dart';
 import 'package:myproject/Admin_Pages/Drivers/Accpted_Rejected_driver.dart/AcceptedDriver.dart';
 import 'package:myproject/Admin_Pages/Drivers/Accpted_Rejected_driver.dart/RejectedDriver.dart';
@@ -11,24 +14,9 @@ import 'package:myproject/Admin_Pages/Drivers/Drivers.dart';
 import 'package:myproject/Admin_Pages/FeedBacks/Feedbacks.dart';
 import 'package:myproject/Admin_Pages/TripsOnTheWay/TripsOntheWay.dart';
 import 'package:myproject/Admin_Pages/Users/Users.dart';
-import 'package:myproject/All_User_Pages/Forgot_password/Forgot_password.dart';
-import 'package:myproject/All_User_Pages/Initial_Page/Initial_Page.dart';
-import 'package:myproject/All_User_Pages/Login_Page/Login_Page.dart';
-import 'package:myproject/All_User_Pages/Phone_Auth/Phone_Number.dart';
-import 'package:myproject/All_User_Pages/SignUp/SignUp.dart';
-import 'package:myproject/All_User_Pages/Splash_Screen/Splash_Screen.dart';
-import 'package:myproject/All_User_Pages/google_sign_in/google_sign_in.dart';
-import 'package:myproject/User_Pages/Feedback_Page/Feedback.dart';
-import 'package:myproject/User_Pages/Map/Map_Screen.dart';
-import 'package:myproject/User_Pages/Home_Page/Home_Page.dart';
-import 'package:myproject/User_Pages/MyHistory/MyHistory.dart';
-import 'package:myproject/User_Pages/Payment/Payment.dart';
-import 'package:myproject/User_Pages/Profile/Profile.dart';
-import 'package:myproject/User_Pages/ReceiverInfo/ReceiverInfo.dart';
-import 'package:myproject/User_Pages/SelectVehicle/SelectVehicle.dart';
-import 'package:myproject/User_Pages/TripDetails/tripDetails.dart';
-import 'package:myproject/User_Pages/User_Details/User_Details.dart';
-import 'package:myproject/User_Pages/WaitingScreen/WaitingScreen.dart';
+import 'package:myproject/Admin_Pages/WidrawRequest/WidrawRequestList.dart';
+
+import 'package:myproject/Admin_Pages/AdminLogin/Splash_Screen.dart';
 import 'package:provider/provider.dart';
 import 'Utils/routes.dart';
 
@@ -61,44 +49,41 @@ void configLoading() {
     ..dismissOnTap = false;
 }
 
-// ignore: use_key_in_widget_constructors
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) => ChangeNotifierProvider(
-        create: (context) => GoogleSignInProvider(),
-        child: GetMaterialApp(
-          // home: FirebaseAuth.instance.currentUser == null
-          //     ? Initial_Page()
-          //     : Home_Page(),
-          title: "My app",
-          themeMode: ThemeMode.light,
-          theme: ThemeData(
-            primarySwatch: Colors.deepPurple,
+  Widget build(BuildContext context) {
+    return Container(
+      child: GetMaterialApp(
+        title: "My app",
+        themeMode: ThemeMode.light,
+        theme: ThemeData(
+          textTheme: GoogleFonts.questrialTextTheme(
+            Theme.of(context).textTheme,
           ),
-          builder: EasyLoading.init(),
-          darkTheme: ThemeData(primarySwatch: Colors.brown),
-          routes: {
-            MyRoutes.initialRoute: (context) => TripDetails(),
-            MyRoutes.homeRoute: (context) => Home_Page(),
-            MyRoutes.loginRoute: (context) => Login_Page(),
-            MyRoutes.signUpRoute: (context) => SignUp(),
-            MyRoutes.forgotPasswordRoute: (context) => Forgot_password(),
-            //MyRoutes.phoneVerification: (context) => Phone_Number(),
-            MyRoutes.myProfileRoute: (context) => Profile(),
-            MyRoutes.myHistory: (context) => MyHistory(),
-            MyRoutes.AdminDashboard: (context) => Dashboard(),
-            MyRoutes.Drivers: (context) => Drivers(),
-            MyRoutes.Users: (context) => Users(),
-            MyRoutes.Map_Screen: (context) => Map_Screen(),
-            MyRoutes.ReceiverInfo: (context) => ReceiverInfo(),
-            MyRoutes.TripDetails: (context) => TripDetails(),
-            MyRoutes.SelectVehicle: (context) => Select_Vehicle(),
-            MyRoutes.FeedbackScreen: (context) => Admin_Feedback_Screen(),
-            MyRoutes.AcceptedDrivers: (context) => Accepted_Drivers(),
-            MyRoutes.RejectedDrivers: (context) => Rejected_Drivers(),
-            MyRoutes.TripsOnTheWay: (context) => TripsOnTheWay(),
-            MyRoutes.PaymentScreen: (context) => Payment(),
-          },
+          primarySwatch: Colors.deepPurple,
         ),
-      );
+        builder: EasyLoading.init(),
+        darkTheme: ThemeData(primarySwatch: Colors.brown),
+        routes: {
+          MyRoutes.initialRoute: (context) => Splash_Screen_Admin(),
+
+          //MyRoutes.phoneVerification: (context) => Phone_Number(),
+
+          MyRoutes.AdminDashboard: (context) => Dashboard(),
+          MyRoutes.Drivers: (context) => Drivers(),
+          MyRoutes.Users: (context) => Users(),
+
+          MyRoutes.FeedbackScreen: (context) => Admin_Feedback_Screen(),
+          MyRoutes.AcceptedDrivers: (context) => Accepted_Drivers(),
+          MyRoutes.RejectedDrivers: (context) => Rejected_Drivers(),
+          MyRoutes.TripsOnTheWay: (context) => TripsOnTheWay(),
+
+          MyRoutes.MyAdminHistory: (context) => CompletedTrips(),
+          MyRoutes.widrawrequest: (context) => WidrawRequestList()
+        },
+      ),
+    );
+  }
 }

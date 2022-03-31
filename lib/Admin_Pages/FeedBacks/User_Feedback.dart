@@ -39,24 +39,22 @@ class _User_Feedback_OwnerState extends State<User_Feedback> {
                           borderOnForeground: true,
                           elevation: 4,
                           child: new ListTile(
-                            title: new Text(doc["First Name"] ?? ""),
+                            title: new Text(
+                              doc["First Name"] ?? "",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                             leading: CircleAvatar(
-                              radius: 25.0,
+                              radius: 30.0,
                               backgroundImage: NetworkImage(doc["Profile pic"]),
                               backgroundColor: Colors.transparent,
                             ),
-                            onTap: () {
-                              id = doc.id;
-                              print(id);
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      Driver_ItSelf_Owner_Details(id: id),
-                                ),
-                              );
-                            },
+                            onTap: () {},
                             subtitle: Text(
-                                'Rating:${doc['Rating']}\nMessage:${doc['Message']}'),
+                              'Rating:${doc['Rating']}\nMessage:${doc['Message']}',
+                            ),
                           ),
                         ),
                       ),

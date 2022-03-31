@@ -150,10 +150,21 @@ class Business_UserDetails extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      "Last Name : ${data['Last Name']}",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Last Name : ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "${data['Last Name']}",
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 10,
